@@ -19,14 +19,28 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
   avatar: {
     type: String,
   },
+
+  // ==========================
+  // SOFT DELETE FIELDS
+  // ==========================
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+  deletedAt: {
+    type: Date,
+    default: null,
+  },
+
   date: {
     type: Date,
     default: Date.now,
   },
 });
 
-export default mongoose.model<IUser & mongoose.Document>("user", UserSchema);
+export default mongoose.model<IUser>("user", UserSchema);
