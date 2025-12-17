@@ -7,6 +7,7 @@ import helmet from "helmet";
 import hpp from "hpp";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import { setupSwagger } from "./swagger";
 
 class App {
   public app: express.Application;
@@ -19,6 +20,9 @@ class App {
     this.production = process.env.NODE_ENV === "production";
 
     this.initializeMiddleware();
+
+    setupSwagger(this.app);
+
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
     this.connectToDatabase();

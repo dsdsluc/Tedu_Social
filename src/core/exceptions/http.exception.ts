@@ -1,5 +1,3 @@
-import { Http } from "winston/lib/winston/transports";
-
 class HttpException extends Error {
   public status: number;
   public message: string;

@@ -1,10 +1,4 @@
-import {
-  IEducation,
-  IExperience,
-  IProfile,
-  ISocial,
-} from "./profile.interface";
-import { IUser, UserSchema } from "@modules/users";
+import { IEducation, IExperience, IProfile } from "./profile.interface";
 
 import CreateProfileDto from "./dtos/create_profile.dto";
 import { HttpException } from "@core/exceptions";
