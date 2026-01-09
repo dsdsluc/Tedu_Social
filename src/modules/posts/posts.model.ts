@@ -8,6 +8,12 @@ const PostSchema = new mongoose.Schema(
       ref: "user",
       required: true,
     },
+
+    images: {
+      type: [String],
+      default: [],
+    },
+
     text: {
       type: String,
       required: true,

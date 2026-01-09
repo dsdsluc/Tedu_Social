@@ -26,6 +26,7 @@ export default class PostService {
     const post = await PostModel.create({
       user: user._id,
       text: postDto.text,
+      images: postDto.images ?? [],
       name: `${user.first_name} ${user.last_name}`,
       avatar: user.avatar ?? null,
     });
@@ -253,21 +254,18 @@ export default class PostService {
 
   public async removeShare(userId: string, postId: string): Promise<ILike[]> {
     const post = await PostModel.findById(postId).exec();
-    if (!post) {
-      throw new HttpException(404, "Post not found");
-    }
+    if (!post) throw new HttpException(404, "Post not found");
 
     const userObjectId = new Types.ObjectId(userId);
 
-    const isShared = post.shares.some((share) =>
-      share.user.equals(userObjectId)
+    const shareIndex = post.shares.findIndex((s) =>
+      s.user.equals(userObjectId)
     );
-
-    if (!isShared) {
+    if (shareIndex === -1) {
       throw new HttpException(400, "Post has not been shared yet");
     }
 
-    post.shares.pull({ user: userObjectId });
+    post.shares.splice(shareIndex, 1);
     await post.save();
 
     return post.shares;

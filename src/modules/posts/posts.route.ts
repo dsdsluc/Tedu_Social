@@ -6,6 +6,8 @@ import { Router } from "express";
 import { authMiddleware } from "@core/middleware";
 import validationMiddleware from "@core/middleware/validation.middleware";
 import CreateCommentDto from "./dtos/create_comment.dto";
+import { uploadMultipleImages } from "@core/middleware/upload.middleware";
+import UploadService from "@core/services/upload.service";
 
 export default class PostsRoute implements Route {
   public path = "/api/v1/posts";
@@ -22,6 +24,7 @@ export default class PostsRoute implements Route {
     this.router.post(
       "/",
       authMiddleware,
+      uploadMultipleImages,
       validationMiddleware(CreatePostDto),
       this.postsController.createPost
     );

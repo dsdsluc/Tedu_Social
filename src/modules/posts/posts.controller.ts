@@ -4,9 +4,12 @@ import CreatePostDto from "./dtos/create_post.dto";
 import UpdatePostDto from "./dtos/update_post.dto";
 import { IPost } from "./posts.interface";
 import CreateCommentDto from "./dtos/create_comment.dto";
+import UploadService from "@core/services/upload.service";
 
 export default class PostController {
   private postService = new PostService();
+
+  private uploadService = new UploadService();
 
   /**
    * POST /api/v1/posts
@@ -20,6 +23,19 @@ export default class PostController {
     try {
       const userId = req.user!.id;
       const data: CreatePostDto = req.body;
+
+      // 👇 LẤY FILE TỪ MULTER
+      const files = req.files as Express.Multer.File[] | undefined;
+
+      if (files && files.length > 0) {
+        const uploadResults = await this.uploadService.uploadMultiple(
+          files,
+          "posts"
+        );
+
+        // chỉ lưu URL
+        data.images = uploadResults.map((img) => img.url);
+      }
 
       const post: IPost = await this.postService.createPost(userId, data);
 

@@ -17,6 +17,7 @@ export default class ConversationService {
     })
       .sort({ lastMessageAt: -1 })
       .populate("lastMessage")
+      .populate("group")
       .exec();
   }
 

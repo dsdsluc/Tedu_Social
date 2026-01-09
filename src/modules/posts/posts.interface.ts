@@ -16,6 +16,8 @@ export interface IPost extends Document {
   user: Types.ObjectId;
   text: string;
 
+  images?: string[];
+
   name?: string | null;
   avatar?: string | null;
 
